@@ -74,8 +74,17 @@ if [[ "$METHOD" == "unsigned" ]]; then
   xcodebuild "${SETTINGS[@]}" -derivedDataPath "$OUT/DerivedData" \
     "${OVERRIDES[@]}" \
     build
-  APP="$OUT/DerivedData/Build/Products/$CONFIG-iphoneos/$APP_NAME.app"
-  [[ -d "$APP" ]] || { echo "LOI: khong thay $APP sau khi build" >&2; exit 1; }
+  PRODUCTS_DIR="$OUT/DerivedData/Build/Products/$CONFIG-iphoneos"
+  # Unity dat ten bundle theo PRODUCT_NAME_APP trong Unity-iPhone.xcodeproj, da bo dau
+  # (vd productName "Ngoc Rong PAT" -> "NgcRngPAT.app"), khong phai ten hien thi.
+  # Vi vay tim .app thuc te trong thu muc san pham thay vi hard-code ten.
+  APP="$(find "$PRODUCTS_DIR" -maxdepth 1 -type d -name '*.app' -print -quit 2>/dev/null || true)"
+  if [[ -z "$APP" ]]; then
+    echo "LOI: khong thay .app nao trong $PRODUCTS_DIR sau khi build" >&2
+    ls -la "$PRODUCTS_DIR" >&2 2>/dev/null || true
+    exit 1
+  fi
+  echo "==> App: $APP"
   rm -rf "$OUT/Payload" "$OUT/$APP_NAME-unsigned.ipa"
   mkdir -p "$OUT/Payload"
   cp -R "$APP" "$OUT/Payload/"
