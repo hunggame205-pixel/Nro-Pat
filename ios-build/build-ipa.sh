@@ -10,9 +10,9 @@ TEAM="${DEVELOPMENT_TEAM:-}"
 BUNDLE_ID="${BUNDLE_ID:-com.DefaultCompany.DragonBoy002}"
 BUILD_NUMBER="${BUILD_NUMBER:-1}"
 OUT="$ROOT/ios-build/out"
-ARCHIVE="$OUT/NroChamPa.xcarchive"
+ARCHIVE="$OUT/Ngọc Rồng PAT.xcarchive"
 EXPORT_DIR="$OUT/ipa"
-APP_NAME="NroChamPa"
+APP_NAME="Ngọc Rồng PAT"
 
 if [[ "$(uname -s)" != "Darwin" ]]; then
   echo "LOI: script nay phai chay tren macOS co Xcode. Windows/Linux khong tao duoc .ipa." >&2
